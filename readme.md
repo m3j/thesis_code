@@ -1,4 +1,10 @@
-### Thesis code goes here
+### Thesis Project Code
 
+# Obtaining strain-level resolution of key species of chicken microbiome and the geographical distribution of these.
 
-first feature? From another conputer!
+All code relevant for my thesis is placed here. This includes 
+* preprocessing 
+* data exploration
+* data analysis 
+* .. 
+
