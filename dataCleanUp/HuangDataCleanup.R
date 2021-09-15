@@ -22,5 +22,8 @@ metadata <- metadata %>%
   mutate(age.days. = str_remove(age.days., "-day$"))
 
 
+metadata <- metadata %>% 
+   filter(!grepl('^pooled', Sample.replicate))
+
 #save table.
-write.csv(metadata,'/Users/Maja/Desktop/Thesis/Data/HuangMetadataTest.csv')
+write.csv(metadata,'/Users/Maja/Documents/DTU/thesis/Andet/Metadata/HuangMetadataRen.csv')

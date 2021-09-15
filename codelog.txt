@@ -1,0 +1,19 @@
+#collection of commands used in my thesis:
+# if they have been run on qsub the filename will be present. otherwise it has been executed on iqsub. 
+
+
+###data download: qsub_chicken_data_download.sh
+# data downloads from NCBI using SRA tools, converted to zipped fastq files.  
+
+cd /home/projects/dtu_00009/data/chicken_data_TM;
+prefetch --output-directory /home/projects/dtu_00009/data/chicken_data_TM --option-file run_ids;
+fastq-dump --gzip --split-files *.sra;
+
+
+###Quality check:
+
+#250MB pr thread
+fastQC -o fastQC/initial_QC -t 40 *.fastq.gz
+multiqc .
+
+
