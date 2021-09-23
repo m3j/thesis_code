@@ -53,6 +53,12 @@ ___________________________________________________________________________
 parallel --xapply -j 4 "bbduk.sh ref=/home/projects/dtu_00009/data/chicken_data_TM/adapter.fa forcetrimleft=5 i
 n1={1} in2={2} out1=Trimmed/{1} out2=Trimmed/{2} ktrim=r k=23 mink=11 hdist=1 hdist2=0 tpe tbo" :::: r1.list ::
 :: r2.list
+
+
+#2.omgang med parallels udenfor
+
+parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap.sh " :::: /home/projects/dtu_00009/data/chicken_data_TM/r1.list :::: /home/projects/dtu_00009/data/chicken_data_TM/r2.list
+
 ___________________________________________________________________________
 
 ## removing low quality with sickle :
@@ -64,11 +70,14 @@ ls Trimmed | grep '_2.fastq.gz$' > trimmed_r2.list
 #Running sickle on all samples to remove <50 bp reads and low quality sequences.
 parallel --xapply -j 4 "sickle pe -t sanger -g -f Trimmed/{1} -r Trimmed/{2} -l 50 -o Hquality/{1} -p Hquality/
 {2} -s Hquality/{1.}_singles.fastq.gz" :::: trimmed_r1.list :::: trimmed_r2.list
+
+#2omgang m parallels udenfor
+parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/qsub_sickle.sh " :::: /home/projects/dtu_00009/data/chicken_data_TM/trimmed_r1.list :::: /home/projects/dtu_00009/data/chicken_data_TM/trimmed_r2.list
 ___________________________________________________________________________
 
 # removing PhiX contamination - running with parallels.
 
-cd /home/projects/dtu_00009/data/chicken_data_TM/Hquality
+cd /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/Hquality
 
 ls | grep 'fastq.gz' > reads.list
 
@@ -78,7 +87,7 @@ parallel -j 4 "bbduk.sh in={} out=../NoPhiX/{} ref=../phix174_ill.ref.fa k=31 hd
 # qsub_Phix_removal.sh
 
 
-parallel --xapply "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_PhiX_removal_subset.sh" :::: reads.list
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_PhiX_removal_subset.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/all_HQreads.list
 
 ___________________________________________________________________________
 
@@ -88,5 +97,38 @@ ___________________________________________________________________________
 parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap_contamination_paired.sh" :::: NoPhiX_r1.list :::: NoPhiX_r2.list
 
 parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap_contamination_singles.sh" :::: NoPhiX_singles.list
+
+___________________________________________________________________________
+
+
+### nonpareil
+#make a list of all the preprocessed reads
+
+ls /home/projects/dtu_00009/data/chicken_data_TM/No_contamination | grep '_1.fastq.gz$' > preprocessed_r1.list
+
+#unziping the files in No_contamination folder. 
+
+#on a small test list
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_unzip_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_test.list
+
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/chicken_data_TM/Scripts/qsub_unzip_nonpareil" :::: home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1.list
+
+# creating a new list with the unzipped file names - so without .gz in the end. 
+ls /home/projects/dtu_00009/data/chicken_data_TM/No_contamination | grep '_1.fastq$' > preprocessed_r1_unzipped.list
+
+# running the nonpareil
+parallel " qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1_unzipped.list
+
+# rezipping the files again
+#on the test.list
+parallel -j 32 "nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/No_contamination{} -T kmer -b {.} -f fastq -t 32" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_test_unzipped.list
+
+# rezip on the full list
+parallel -j 32 "nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/No_contamination{} -T kmer -b {.} -f fastq -t 32" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1_unzipped.list
+
+
+
+
+
 
 
