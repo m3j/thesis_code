@@ -1,6 +1,7 @@
 #collection of commands used in my thesis:
 # if they have been run on qsub the filename will be present. otherwise it has been executed on iqsub. 
 
+___________________________________________________________________________
 
 ###data download: qsub_chicken_data_download.sh
 # data downloads from NCBI using SRA tools, converted to zipped fastq files.  
@@ -9,11 +10,83 @@ cd /home/projects/dtu_00009/data/chicken_data_TM;
 prefetch --output-directory /home/projects/dtu_00009/data/chicken_data_TM --option-file run_ids;
 fastq-dump --gzip --split-files *.sra;
 
+___________________________________________________________________________
 
-###Quality check:
+### subsampling without parallels on predefined fastsubset.list : qsub_data_subset.sh
+
+while read f; do
+  seqtk sample $f 10000 | gzip - -c > /home/projects/dtu_00009/data/chicken_data_TM/subset/$f 
+done <fastq_subset.list
+_____________________
+
+## subsampling with GNU parallels
+
+cd /home/projects/dtu_00009/data/chicken_data_TM 
+
+#create a list with all fastq file names
+ls | grep ‘.fastq.gz$’ > subset/fastq.list
+
+# test with one sample:
+# seqtk sample SRR9113737_1.fastq.gz 1000 | gzip - -c > /home/projects/dtu_00009/data/chicken_data_TM/subset/SRR9113737_1.fastq.gz 
+
+# running in parallel 
+parallel -j 38 "seqtk sample {} 10000 | gzip - -c > /home/projects/dtu_00009/data/chicken_data_TM/subset/{}" :::: fastq.list
+_________________________________________________________________________
+
+###Quality check: on iqsub with 1 node and 40 cores.  
+
+# for test on subset: 
+fastqc -o /fastQC -t 40 *.fastq.gz
+
+cd /home/projects/dtu_00009/data/chicken_data_TM
 
 #250MB pr thread
-fastQC -o fastQC/initial_QC -t 40 *.fastq.gz
+fastqc -o /fastQC/initial_QC -t 40 *.fastq.gz
+
+conda activate env_python3.6
 multiqc .
+___________________________________________________________________________
+
+## removing adapters and first 5 bases with bbmap and bbduk  
+# qsub_bbmap.sh
+
+parallel --xapply -j 4 "bbduk.sh ref=/home/projects/dtu_00009/data/chicken_data_TM/adapter.fa forcetrimleft=5 i
+n1={1} in2={2} out1=Trimmed/{1} out2=Trimmed/{2} ktrim=r k=23 mink=11 hdist=1 hdist2=0 tpe tbo" :::: r1.list ::
+:: r2.list
+___________________________________________________________________________
+
+## removing low quality with sickle :
+# qsub_sickle.sh 
+
+ls Trimmed | grep '_1.fastq.gz$' > trimmed_r1.list
+ls Trimmed | grep '_2.fastq.gz$' > trimmed_r2.list
+
+#Running sickle on all samples to remove <50 bp reads and low quality sequences.
+parallel --xapply -j 4 "sickle pe -t sanger -g -f Trimmed/{1} -r Trimmed/{2} -l 50 -o Hquality/{1} -p Hquality/
+{2} -s Hquality/{1.}_singles.fastq.gz" :::: trimmed_r1.list :::: trimmed_r2.list
+___________________________________________________________________________
+
+# removing PhiX contamination - running with parallels.
+
+cd /home/projects/dtu_00009/data/chicken_data_TM/Hquality
+
+ls | grep 'fastq.gz' > reads.list
+
+parallel -j 4 "bbduk.sh in={} out=../NoPhiX/{} ref=../phix174_ill.ref.fa k=31 hdist=1" :::: reads.list
+
+# When running paralles outside the qsub-file but runing a different q_sub on each file. 
+# qsub_Phix_removal.sh
+
+
+parallel --xapply "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_PhiX_removal_subset.sh" :::: reads.list
+
+___________________________________________________________________________
+
+#when running host contamination on gallus gallus and Brachypodium distachyon - related to all relavent corn species - but with a choromosome size below 500 MB. 
+# qsub_bbmap_contamination_subset.sh - virker på subsets men qsub_bbmap_contamination.sh virker ikke af uforklarelige årsager, men med parallels udenfor qsub ser det bedre ud. 
+
+parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap_contamination_paired.sh" :::: NoPhiX_r1.list :::: NoPhiX_r2.list
+
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap_contamination_singles.sh" :::: NoPhiX_singles.list
 
 

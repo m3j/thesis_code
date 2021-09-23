@@ -1,0 +1,77 @@
+#!/bin/sh
+### Note: No commands may be executed until after the #PBS lines
+### Account information
+#PBS -W group_list=dtu_00009 -A dtu_00009
+### Job name (comment out the next line to get the name of the script used as the job name)
+#PBS -N qsub_name
+### Output files (comment out the next 2 lines to get the job name used instead)
+#PBS -e $PBS_JOBID.qsub_name.stderr
+#PBS -o $PBS_JOBID.qsub_name.stdout
+### Only send mail when job is aborted or terminates abnormally
+#PBS -m n
+### Number of nodes
+#PBS -l nodes=1:ppn=40:thinnode
+### Memory
+#PBS -l mem=100gb
+### Requesting time - format is <days>:<hours>:<minutes>:<seconds> (here, 30 days)
+#PBS -l walltime=30:00:00:00
+##contact incase of event
+#PBS -M s182409@student.dtu.dk
+#PBS -m abe
+
+# Go to the directory from where the job was submitted (initial directory is $HOME)
+echo Working directory is "$PBS_O_WORKDIR"
+cd "$PBS_O_WORKDIR"
+
+# or define specific path
+cd /home/projects/dtu_00009/data/chicken_data_TM 
+
+
+# >>> conda initialize >>>
+__conda_setup="$('/home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+# activate the correct conda environment
+conda activate env_nonpareil
+
+#code for running nonpareil
+
+cd home/projects/dtu_00009/data/chicken_data_TM/subset
+
+mkdir nonpareil
+
+cd home/projects/dtu_00009/data/chicken_data_TM/subset/nonpareil
+
+#to unzip and pass to output. - dur ikke med nonpareil
+#gunzip -c myfile.gz | myScript.pl -o myoutfile.txt -i -
+
+# unzip fastq.qz to .fastq # check navnene i den endelige folder. - har ikke permission på subset/No_contamination
+# gunzip -d /home/projects/dtu_00009/data/chicken_data_TM/subset/NoPhiX/SRR9113737_1.fastq.gz
+
+# -n (1024) must be multiplicable with -t so 8 or 32 or somewhere in between.
+# chekning with one sample - on subset -X 900
+# nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/subset/NoPhiX/SRR9113737_1.fastq -T kmer -b SSR9113737 -f fastq -t 8
+
+# gzip /home/projects/dtu_00009/data/chicken_data_TM/subset/NoPhiX/SRR9113737_1.fastq
+
+
+# running in parallels !
+# ls home/projects/dtu_00009/data/chicken_data_TM/subset/NoPhiX | grep '_1.fastq.gz$' > preprocessed_r1.list 
+
+# parallel -j 38 "gunzip -d /home/projects/dtu_00009/data/chicken_data_TM/subset/NoPhiX/{}" :::: preprocessed_r1.list
+
+# parallel -j 32 "nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/subset/NoPhiX/{} -T kmer -b Nonpareil/{.} -f fastq -t 32 -X 900" :::: preprocessed_r1.list
+
+# parallel -j 38 "gzip /home/projects/dtu_00009/data/chicken_data_TM/subset/NoPhiX/{}" :::: preprocessed_r1.list
+
+conda deactivate
