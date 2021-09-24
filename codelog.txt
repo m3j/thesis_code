@@ -87,14 +87,16 @@ parallel -j 4 "bbduk.sh in={} out=../NoPhiX/{} ref=../phix174_ill.ref.fa k=31 hd
 # qsub_Phix_removal.sh
 
 
-parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_PhiX_removal_subset.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/all_HQreads.list
+#parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_PhiX_removal_subset.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/HQ_reads.list
+
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_Phix_removal.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/HQ_reads.list
 
 ___________________________________________________________________________
 
 #when running host contamination on gallus gallus and Brachypodium distachyon - related to all relavent corn species - but with a choromosome size below 500 MB. 
 # qsub_bbmap_contamination_subset.sh - virker på subsets men qsub_bbmap_contamination.sh virker ikke af uforklarelige årsager, men med parallels udenfor qsub ser det bedre ud. 
 
-parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap_contamination_paired.sh" :::: NoPhiX_r1.list :::: NoPhiX_r2.list
+parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap_contamination_paired.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/NoPhiX_r1.list :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/NoPhiX_r2.list
 
 parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap_contamination_singles.sh" :::: NoPhiX_singles.list
 
@@ -104,7 +106,7 @@ ___________________________________________________________________________
 ### nonpareil
 #make a list of all the preprocessed reads
 
-ls /home/projects/dtu_00009/data/chicken_data_TM/No_contamination | grep '_1.fastq.gz$' > preprocessed_r1.list
+ls /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/No_contamination | grep '_1.fastq.gz$' > /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1.list
 
 #unziping the files in No_contamination folder. 
 
@@ -114,7 +116,7 @@ parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_unzip_nonpare
 parallel "qsub -F '{1}' /home/projects/dtu_00009/data/chicken_data_TM/Scripts/qsub_unzip_nonpareil" :::: home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1.list
 
 # creating a new list with the unzipped file names - so without .gz in the end. 
-ls /home/projects/dtu_00009/data/chicken_data_TM/No_contamination | grep '_1.fastq$' > preprocessed_r1_unzipped.list
+ls /home/projects/dtu_00009/data/chicken_data_TM/No_contamination | grep '_1.fastq$' > /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1_unzipped.list
 
 # running the nonpareil
 parallel " qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1_unzipped.list
@@ -126,6 +128,33 @@ parallel -j 32 "nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/No_co
 # rezip on the full list
 parallel -j 32 "nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/No_contamination{} -T kmer -b {.} -f fastq -t 32" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1_unzipped.list
 
+___________________________________________________________________________
+
+## Assembley
+
+#for counting kmers. (not sure why) -m 15 is kmer size of 15. 
+gzip -dc Vchol-001_6.pair*.truncated.gz | jellyfish count -t 2 -m 15 -s 1000000000 -o Vchol-001 -C /dev/fd/0
+jellyfish histo Vchol-001 > Vchol-001.histo
+
+R
+dat=read.table("Vchol-001.histo")
+barplot(dat[,2], xlim=c(0,150), ylim=c(0,5e5), ylab="No of kmers", xlab="Counts of a k-mer", names.arg=dat[,1], cex.names=0.8)
+dev.print("Vchol-001.histo.pdf", device=pdf)
+
+# to view the plot or download if it dosen't work - or download anyway to keep: 
+evince kmerFreq.pdf &
+
+#running SPAdes - SPAdes will run error correction and use multiple k-mers at the same time when it is doing the assembly. 
+
+/home/27626/bin/spades.py --meta -1 MH0047.1.fastq.gz -2 MH0047.2.fastq.gz -m 120 -o spades_MH0047
+
+# some SPAdes options 
+-t <int> (or --threads <int>) :Number of threads. The default value is 16.
+
+-m <int> (or --memory <int>) Set memory limit in Gb. SPAdes terminates if it reaches this limit. The default value is 250 Gb. Actual amount of consumed RAM will be below this limit. Make sure this value is correct for the given machine. SPAdes uses the limit value to automatically determine the sizes of various buffers, etc.
+
+#Path to SPAdes
+home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/envs/env_SPAdes/bin/spades.py
 
 
 
