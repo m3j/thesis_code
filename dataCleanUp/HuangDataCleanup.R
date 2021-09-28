@@ -1,7 +1,11 @@
+
+rm(list=ls())
+
 library(tidyverse)
 
+huang_all <- read.table(file = "~/Documents/DTU/thesis/Andet/Metadata/huangAll.tsv", header = TRUE, sep = '\t')
 #include for housing free-range/cage
-metadata <- Huang.Tabel.1 %>% mutate(Housing  = ifelse (location_name.farm. == "China:Guandong" | (location_name.farm. == "China:Hunan" & Feed == "not collected") , "free-range", "cage"))
+metadata <- huang_all %>% mutate(Housing  = ifelse (location_name.farm. == "China:Guandong" | (location_name.farm. == "China:Hunan" & Feed == "not collected") , "free-range", "cage"))
 
 #include breed based on farm and housing
 metadata <- metadata %>% 
@@ -26,4 +30,4 @@ metadata <- metadata %>%
    filter(!grepl('^pooled', Sample.replicate))
 
 #save table.
-write.csv(metadata,'/Users/Maja/Documents/DTU/thesis/Andet/Metadata/HuangMetadataRen.csv')
+write.csv(metadata,'/Users/Maja/Documents/DTU/thesis/Andet/Metadata/HuangMetadataClean.csv')

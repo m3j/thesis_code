@@ -35,13 +35,13 @@ _________________________________________________________________________
 
 ###Quality check: on iqsub with 1 node and 40 cores.  
 
-# for test on subset: 
-fastqc -o /fastQC -t 40 *.fastq.gz
+# for test on subset: fastqc -o /fastQC -t 38 *.fastq.gz
 
 cd /home/projects/dtu_00009/data/chicken_data_TM
 
 #250MB pr thread
 fastqc -o /fastQC/initial_QC -t 40 *.fastq.gz
+fastqc -o ../fastQC -t 40 *.fastq.gz
 
 conda activate env_python3.6
 multiqc .
@@ -121,14 +121,14 @@ ls /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/No_contamination | gre
 #on a small test list
 parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_unzip_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/test.list
 
-parallel "qsub -F '{1}' /home/projects/dtu_00009/data/chicken_data_TM/Scripts/qsub_unzip_nonpareil" :::: home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1.list
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_unzip_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/preprocessed_r1.list
 
 # creating a new list with the unzipped file names - so without .gz in the end. 
-ls /home/projects/dtu_00009/data/chicken_data_TM/No_contamination | grep '_1.fastq$' > /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1_unzipped.list
+ls /home/projects/dtu_00009/data/chicken_data_TM/2_omgangNo_contamination | grep '_1.fastq$' > /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/preprocessed_r1_unzipped.list
 
 
 # running the nonpareil
-parallel " qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1_unzipped.list
+parallel " qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/preprocessed_r1_unzipped.list
 
 # for the test list:
 parallel " qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/unzipped_test.list
@@ -142,7 +142,7 @@ parallel -j 32 "nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/No_co
 # rezip on the full list
 parallel -j 32 "nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/No_contamination{} -T kmer -b {.} -f fastq -t 32" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1_unzipped.list
 
-parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_rezip_after_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/unzipped_test.list
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_rezip_after_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/preprocessed_r1_unzipped.list
 
 
 ___________________________________________________________________________
