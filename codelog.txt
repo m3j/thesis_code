@@ -75,7 +75,7 @@ parallel --xapply -j 4 "sickle pe -t sanger -g -f Trimmed/{1} -r Trimmed/{2} -l 
 parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/qsub_sickle.sh " :::: /home/projects/dtu_00009/data/chicken_data_TM/trimmed_r1.list :::: /home/projects/dtu_00009/data/chicken_data_TM/trimmed_r2.list
 ___________________________________________________________________________
 
-# removing PhiX contamination - running with parallels.
+# removing PhiX contamination - running with parallels. - remember to specify threads
 
 cd /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/Hquality
 
@@ -86,19 +86,27 @@ parallel -j 4 "bbduk.sh in={} out=../NoPhiX/{} ref=../phix174_ill.ref.fa k=31 hd
 # When running paralles outside the qsub-file but runing a different q_sub on each file. 
 # qsub_Phix_removal.sh
 
+# for the paired reads
+parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/qsub_Phix_removal.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/HQ_read1.list :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/HQ_read2.list
+
+#for the single reads
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_Phix_removal.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/HQ_read_singles.list
+
 
 #parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_PhiX_removal_subset.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/HQ_reads.list
 
-parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_Phix_removal.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/HQ_reads.list
+#parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_Phix_removal.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/HQ_reads.list
+
+
 
 ___________________________________________________________________________
 
 #when running host contamination on gallus gallus and Brachypodium distachyon - related to all relavent corn species - but with a choromosome size below 500 MB. 
-# qsub_bbmap_contamination_subset.sh - virker på subsets men qsub_bbmap_contamination.sh virker ikke af uforklarelige årsager, men med parallels udenfor qsub ser det bedre ud. 
+# qsub_bbmap_contamination_subset.sh - virker på subsets men qsub_bbmap_contamination.sh virker ikke af uforklarelige årsager, men med parallels udenfor qsub ser det bedre ud. + nodisk=true og -t=32
 
 parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap_contamination_paired.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/NoPhiX_r1.list :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/NoPhiX_r2.list
 
-parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap_contamination_singles.sh" :::: NoPhiX_singles.list
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap_contamination_singles.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/NoPhiX_singles.list
 
 ___________________________________________________________________________
 
@@ -106,27 +114,36 @@ ___________________________________________________________________________
 ### nonpareil
 #make a list of all the preprocessed reads
 
-ls /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/No_contamination | grep '_1.fastq.gz$' > /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1.list
+ls /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/No_contamination | grep '_1.fastq.gz$' > /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/preprocessed_r1.list
 
 #unziping the files in No_contamination folder. 
 
 #on a small test list
-parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_unzip_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_test.list
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_unzip_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/test.list
 
 parallel "qsub -F '{1}' /home/projects/dtu_00009/data/chicken_data_TM/Scripts/qsub_unzip_nonpareil" :::: home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1.list
 
 # creating a new list with the unzipped file names - so without .gz in the end. 
 ls /home/projects/dtu_00009/data/chicken_data_TM/No_contamination | grep '_1.fastq$' > /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1_unzipped.list
 
+
 # running the nonpareil
 parallel " qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1_unzipped.list
 
+# for the test list:
+parallel " qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/unzipped_test.list
+
+
+
 # rezipping the files again
 #on the test.list
-parallel -j 32 "nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/No_contamination{} -T kmer -b {.} -f fastq -t 32" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_test_unzipped.list
+parallel -j 32 "nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/No_contamination{} -T kmer -b {.} -f fastq -t 32" :::: /home/projects/dtu_00009/data/chicken_data_TM/unzipped_test.list
 
 # rezip on the full list
 parallel -j 32 "nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/No_contamination{} -T kmer -b {.} -f fastq -t 32" :::: /home/projects/dtu_00009/data/chicken_data_TM/preprocessed_r1_unzipped.list
+
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_rezip_after_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/unzipped_test.list
+
 
 ___________________________________________________________________________
 
@@ -152,6 +169,7 @@ evince kmerFreq.pdf &
 -t <int> (or --threads <int>) :Number of threads. The default value is 16.
 
 -m <int> (or --memory <int>) Set memory limit in Gb. SPAdes terminates if it reaches this limit. The default value is 250 Gb. Actual amount of consumed RAM will be below this limit. Make sure this value is correct for the given machine. SPAdes uses the limit value to automatically determine the sizes of various buffers, etc.
+
 
 #Path to SPAdes
 home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/envs/env_SPAdes/bin/spades.py
