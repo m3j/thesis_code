@@ -10,6 +10,8 @@ cd /home/projects/dtu_00009/data/chicken_data_TM;
 prefetch --output-directory /home/projects/dtu_00009/data/chicken_data_TM --option-file run_ids;
 fastq-dump --gzip --split-files *.sra;
 
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_chicken_data_download.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/raw_data/sra.list
+
 ___________________________________________________________________________
 
 ### subsampling without parallels on predefined fastsubset.list : qsub_data_subset.sh
@@ -102,7 +104,7 @@ parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_Phix_removal.
 ___________________________________________________________________________
 
 #when running host contamination on gallus gallus and Brachypodium distachyon - related to all relavent corn species - but with a choromosome size below 500 MB. 
-# qsub_bbmap_contamination_subset.sh - virker på subsets men qsub_bbmap_contamination.sh virker ikke af uforklarelige årsager, men med parallels udenfor qsub ser det bedre ud. + nodisk=true og -t=32
+# qsub_bbmap_contamination_subset.sh - virker på subsets men qsub_bbmap_contamination.sh virker ikke af uforklarelige årsager, men med parallels udenfor qsub ser det bedre ud - tilføjer man nodisk = true så skriver den ikke index filen til disk der ellers vil blive korrupted når man kører parallelt. + nodisk=true og -t=32
 
 parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/qsub_bbmap_contamination_paired.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/NoPhiX_r1.list :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/NoPhiX_r2.list
 
@@ -173,6 +175,30 @@ evince kmerFreq.pdf &
 
 #Path to SPAdes
 home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/envs/env_SPAdes/bin/spades.py
+
+
+#parallel --xapply "qsub -F '{1} {2} {3}' /home/projects/dtu_00009/data/Scripts/qsub_spades.sh " :::: /home/projects/dtu_00009/d
+ata/chicken_data_TM/2_omgang/preprocessed_r1.list :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/preprocessed_r2.li
+st :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/preprocessed_singles.list
+
+conda activate env_SPAdes
+
+#Get input filenames from commandline
+R1=$1
+R2=$2
+S1=$3
+
+#Run commands
+output_dir="${R1%%_*}"
+
+spades.py --meta -k 21,33,55,77 -o /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/"$output_dir" -1 "$R1" -
+2 "$R2" -s "$S1"
+#Deactivate conda enviroment
+conda deactivate
+
+
+
+
 ___________________________________________________________________________
 
 #VAMB
@@ -192,13 +218,13 @@ concatenate.py output_file input_file1 input_file2 ...
 /home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/envs/env_vamb/bin/concatenate.py /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/catalogue.fna.gz /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241647/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR9113725/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR9113737/contigs.fasta 
 
 #generating BAM files 
-# first indexing og catalog - ref. file
+# first indexing og catalog - ref. file 
 
-minimap2 -I 32g -d catalogue.mmi /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/catalogue.fna.gz
+minimap2 -I 32g -d catalogue.mmi /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/catalogue.fna.gz
 
-align reads back to reference based on SPAdes denovo assembley:
-
-cut -f 1 samples2data.txt > sampleName
+#align reads back to reference based on SPAdes denovo assembley:
+#getting the first column from samples2data.txt to get a list of samples id
+cut -f 1 samples2data.txt > sampleName 
 
 # command in the Script file qsub_minimap_vamb.sh:
 _________
@@ -237,14 +263,14 @@ ____________
 
 jgi_summarize_bam_contig_depths --outputDepth /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/jgi_depthMatrix /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241647.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241649.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241651.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241653.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241655.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241848.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241849.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241855.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241856.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241860.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241887.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241890.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241891.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241893.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241899.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241919.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241923.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241925.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241927.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241945.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323088.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323134.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323167.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323172.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323197.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323200.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323205.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323243.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323244.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323247.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323249.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323250.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323252.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323295.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323296.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323338.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323340.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323343.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323350.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323367.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323384.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323414.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323449.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323493.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323502.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323503.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323514.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323516.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323530.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323550.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323556.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR9113691.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR9113706.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR9113707.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR9113725.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR9113737.sorted.bam 
 
-jgi_summarize_bam_contig_depths --outputDepth /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/jgi_depthMatrix /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/bam/sorted/ERR2241647.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/bam/sorted/SRR9113725.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/bam/sorted/SRR9113737.sorted.bam 
+jgi_summarize_bam_contig_depths --outputDepth /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/depthMatrix.jgi /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/bam/sorted/ERR2241647.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/bam/sorted/SRR9113725.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/bam/sorted/SRR9113737.sorted.bam 
 
 # then to running actual vamb! 
 
 vamb -o SEP --outdir OUT --fasta FASTA --bamfiles BAM1 BAM2 [...] --minfasta 200000
-                                       --jgi jgi_depth_matrix
+                                       --jgi depthMatrix.jgi
 
-vamb -o C --outdir /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/vamb_output/ --fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/catalogue.fna.gz --jgi /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/jgi_depthMatrix --minfasta 200000 
+vamb -o C --outdir /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/vamb_output/ --fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/catalogue.fna.gz --jgi /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/depthMatrix.jgi --minfasta 200000 
 
 
 qsubfile :
@@ -260,11 +286,23 @@ vamb -o C --cuda --outdir "$1" --fasta "$2" --jgi "$3"  --minfasta 200000
 conda deactivate
 _________
 
+#test set
 qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/vamb_output /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/catalogue.fna.gz /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/depthMatrix.jgi' /home/projects/dtu_00009/data/Scripts/qsub_vamb.sh
 
+#on full data set
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/vamb_output /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/catalogue.fna.gz /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/depthMatrix.jgi' /home/projects/dtu_00009/data/Scripts/qsub_vamb.sh
 
+___________________________________________________________________________________________
 
+#checkM 
 
+# qsub_checkM.sh
+checkm lineage_wf -t 32 -f /results_file --tab_table bin_dir output_dir
 
+# on subset
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/checkM_test/results_file /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/vamb_output/bins /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/checkM_test' /home/projects/dtu_00009/data/Scripts/qsub_checkM.sh
 
+#on full data
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/checkM/results_file /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/vamb_output/bins /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/checkM' /home/projects/dtu_00009/data/Scripts/qsub_checkM.sh
+___________________________________________________________________________
 
