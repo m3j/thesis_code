@@ -306,3 +306,18 @@ qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/checkM_test/resu
 qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/checkM/results_file /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/vamb_output/bins /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/checkM' /home/projects/dtu_00009/data/Scripts/qsub_checkM.sh
 ___________________________________________________________________________
 
+# GDTB 
+
+# qsub_GTDB.sh needs a fat node for memory
+#gtdbtk classify_wf --genome_dir INPUT --out_dir OUT_DIR --cpus 20 --force --debug
+
+#on subset
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/vamb_output/bins /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/GTDB_test' /home/projects/dtu_00009/data/Scripts/qsub_GTDB.sh
+
+# on full data 
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/vamb_output/bins /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/GTDB' /home/projects/dtu_00009/data/Scripts/qsub_GTDB.sh
+
+___________________________________________________________________________
+
+
+
