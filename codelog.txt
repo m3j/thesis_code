@@ -261,6 +261,9 @@ ____________
 #For generating depth matrix from MetaBat - using iqsub (remember correct environment env_vamb)
 #Usage: jgi_summarize_bam_contig_depths <options> sortedBam1 [ sortedBam2 ...]
 
+#maybe this can be used instead of the long code below:
+jgi_summarize_bam_contig_depths --outputDepth /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/jgi_depthMatrix /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/*.sorted.bam
+
 jgi_summarize_bam_contig_depths --outputDepth /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/jgi_depthMatrix /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241647.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241649.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241651.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241653.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241655.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241848.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241849.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241855.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241856.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241860.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241887.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241890.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241891.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241893.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241899.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241919.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241923.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241925.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241927.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/ERR2241945.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323088.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323134.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323167.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323172.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323197.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323200.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323205.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323243.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323244.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323247.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323249.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323250.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323252.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323295.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323296.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323338.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323340.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323343.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323350.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323367.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323384.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323414.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323449.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323493.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323502.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323503.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323514.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323516.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323530.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323550.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR6323556.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR9113691.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR9113706.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR9113707.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR9113725.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/sorted/SRR9113737.sorted.bam 
 
 jgi_summarize_bam_contig_depths --outputDepth /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/depthMatrix.jgi /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/bam/sorted/ERR2241647.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/bam/sorted/SRR9113725.sorted.bam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/bam/sorted/SRR9113737.sorted.bam 
@@ -306,7 +309,7 @@ qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/checkM_test/resu
 qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/checkM/results_file /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/vamb_output/bins /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/checkM' /home/projects/dtu_00009/data/Scripts/qsub_checkM.sh
 ___________________________________________________________________________
 
-# GDTB 
+# GDTB
 
 # qsub_GTDB.sh needs a fat node for memory
 #gtdbtk classify_wf --genome_dir INPUT --out_dir OUT_DIR --cpus 20 --force --debug
@@ -319,5 +322,22 @@ qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/vamb_output
 
 ___________________________________________________________________________
 
+# dRep
 
+#dRep is able to perform rapid genome comparisons for a group of genomes and visualize their relatedness.
+
+dRep compare '$OutputDir' -g '$inputFiles'
+
+#De-replicatae a set of genomes. 
+
+dRep dereplicate /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/dRep/test/dereplicate -g /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/vamb_output/bins/*.fna
+
+#qsub:
+
+OutputDir=$1
+inputFiles=$2
+
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/drep_test/compare' /home/projects/dtu_00009/data/Scripts/qsub_drep_compare.sh
+
+/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/drep_test/genomePathList
 
