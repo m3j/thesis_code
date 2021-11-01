@@ -196,9 +196,6 @@ spades.py --meta -k 21,33,55,77 -o /home/projects/dtu_00009/data/chicken_data_TM
 #Deactivate conda enviroment
 conda deactivate
 
-
-
-
 ___________________________________________________________________________
 
 #VAMB
@@ -323,6 +320,7 @@ qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/vamb_output
 ___________________________________________________________________________
 
 # dRep
+# COMPARE
 
 #dRep is able to perform rapid genome comparisons for a group of genomes and visualize their relatedness.
 
@@ -332,12 +330,53 @@ dRep compare '$OutputDir' -g '$inputFiles'
 
 dRep dereplicate /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/dRep/test/dereplicate -g /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/vamb_output/bins/*.fna
 
-#qsub:
+# alternatvie input from path listL /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/drep/genomePathList
 
-OutputDir=$1
-inputFiles=$2
-
+#test_set 
 qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/drep_test/compare' /home/projects/dtu_00009/data/Scripts/qsub_drep_compare.sh
 
+# fuld dataset
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/drep/compare' /home/projects/dtu_00009/data/Scripts/qsub_drep_compare.sh
+
 /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/drep_test/genomePathList
+____________
+#DEREPLICATE
+
+dRep dereplicate "$outputDir" -g /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/vamb_output/bins/* -d -com 50 -con 10
+
+#using filtering levels equal to middel quality of contamination 10% and completness of 50% ? - ask Gisle
+
+
+#test_set 
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/drep_test/dereplicate' /home/projects/dtu_00009/data/Scripts/qsub_drep_dereplicate.sh
+
+#full dataset
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/drep/dereplicate' /home/projects/dtu_00009/data/Scripts/qsub_drep_dereplicate.sh
+
+___________________________________________________________________________
+
+
+Downloadning reference genomes:
+
+parallel "qsub -F '{1} /home/projects/dtu_00009/data/reference_genomes/Alistipes_refs'  /home/projects/dtu_00009/data/Scripts/qsub_refgenomes_download.sh & sleep 2 " :::: /home/projects/dtu_00009/data/reference_genomes/Alistipes_refs/Alistipes_AccesionNames
+
+parallel "qsub -F '{1}'  /home/projects/dtu_00009/data/Scripts/qsub_refgenomes_download.sh" :::: /home/projects/dtu_00009/data/reference_genomes/Alistipes_refs/Alistipes_AccesionNames
+
+
+
+GCF_001436415.1_ASM143641v1_genomic.fna.gz did not download correctly in Lactobacillus.  - downloaded individuelt. 
+
+___________________________________________________________________________
+
+# InStrain
+Skal bruge en mapping og fastafiler -  reference genomer (/home/projects/dtu_00009/data/reference_genomes/Lactobacillus_refs) + HQ_derepped Bins ( ⁨thesis_code⁩/data56_related_files⁩⁨) - OG det er alle 119 HQ bins som vi vil placere og sammenligne. 
+HighQLactobacillaceae <- df af interesante bins - HQ Lactobacillaceae bins.
+
+
+profile:  inStrain profile .bam_file .fasta_file -o IS_output_name
+
+compare :   inStrain compare -i IS_output_1 IS_output_2 IS_output_3
+
+Each inStrain profile object used by InStrain compare must be made from reads mapped to the same fasta file.
+
 
