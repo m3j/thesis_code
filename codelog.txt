@@ -208,6 +208,9 @@ concatenate.py output_file input_file1 input_file2 ...
 
 #filelist with path generated in contigs.txt wiht jupyternotebook "vamb - file prep" - make sure to be /home/..
 
+#probably you can use the following instead of the long code below. 
+/home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/envs/env_vamb/bin/concatenate.py /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/catalogue.fna.gz /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/*/contigs.fasta
+
 # actual command run on iqsub:
 /home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/envs/env_vamb/bin/concatenate.py /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/catalogue.fna.gz /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241647/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241649/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241651/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241653/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241655/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241848/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241849/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241855/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241856/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241860/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241887/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241890/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241891/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241893/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241899/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241919/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241923/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241925/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241927/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/ERR2241945/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323088/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323134/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323167/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323172/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323197/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323200/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323205/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323243/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323244/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323247/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323249/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323250/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323252/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323295/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323296/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323338/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323340/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323343/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323350/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323367/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323384/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323414/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323449/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323493/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323502/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323503/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323514/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323516/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323530/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323550/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR6323556/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR9113691/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR9113706/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR9113707/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR9113725/contigs.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/spades_output/SRR9113737/contigs.fasta
 
@@ -369,8 +372,7 @@ GCF_001436415.1_ASM143641v1_genomic.fna.gz did not download correctly in Lactoba
 ___________________________________________________________________________
 
 # InStrain
-Skal bruge en mapping og fastafiler -  reference genomer (/home/projects/dtu_00009/data/reference_genomes/Lactobacillus_refs) + HQ_derepped Bins ( ⁨thesis_code⁩/data56_related_files⁩⁨) - OG det er alle 119 HQ bins som vi vil placere og sammenligne. 
-HighQLactobacillaceae <- df af interesante bins - HQ Lactobacillaceae bins.
+Skal bruge en mapping og fastafiler -  reference genomer (/home/projects/dtu_00009/data/reference_genomes/Lactobacillus_refs) + HQ_derepped Bins ( ⁨thesis_code⁩/data56_related_files⁩⁨)  
 
 
 profile:  inStrain profile .bam_file .fasta_file -o IS_output_name
@@ -378,5 +380,103 @@ profile:  inStrain profile .bam_file .fasta_file -o IS_output_name
 compare :   inStrain compare -i IS_output_1 IS_output_2 IS_output_3
 
 Each inStrain profile object used by InStrain compare must be made from reads mapped to the same fasta file.
+
+1.  Map "reads" to the genomes we want to profile - HQ_lactobacillacea bins + ref genomes against all reads. 
+2.  
+
+
+# copy drep_bins from vamb_output to seperate folder in /inStrain/ref_bins/
+for FILE in $(cat /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/ref_bins/drep_lactobacillaceae_bins.csv)
+do
+    cp ${FILE} /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/ref_bins/
+done
+
+Renaming headers in bin files to match format in database genomes. remove before first space and after comma. 
+>S14CNODE_5258_length_4433_cov_6.103765 species_name genome id, 
+Endend up making a python script
+
+python Append_Header_Fasta.py /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/ref_bins/ /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/ref_bins/ref_bins_header.csv 
+
+unzip genomes from DB to be able to run dRep - maybe there is no need to unzip?:
+parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_unzip_nonpareil.sh" :::: /home/projects/dtu_00009/data/reference_genomes/Lactobacillaceae_refs/genomes.txt
+
+Drep on database genomes and drep_bins. 
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/dRep/' /home/projects/dtu_00009/data/Scripts/qsub_drep_dereplicate.sh
+
+To see the differenece between the two directories - which genomes were removed by dRep:
+diff -q dRep/dereplicated_genomes/ combined_db_bins_refs/
+
+Only in combined_db_bins_refs/: GCA_003343585.1_ASM334358v1_genomic.fna
+Only in combined_db_bins_refs/: S12C188.fna
+
+from the dereplicated genomes .fna folders we need to concatenate all our genomes to one file:
+cat $(ls *.fna) > ../../allGenomes.fasta
+
+Creating scaffold to bin file we need to conda activate env_drep og ellers køre følgende.  
+parse_stb.py --reverse -f /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/dRep/dereplicated_genomes/*.fna  -o /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/genomes.stb
+
+Mapping with bowtie2
+mkdir bowtie2
+
+#blvier nødt til at dele den op:
+#create index
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/allGenomes.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/bowtie2/allGenomesMappingIndex.fa'  /home/projects/dtu_00009/data/Scripts/qsub_bowtie_build.sh
+
+genome=$1
+IndexOutput=$2
+
+bowtie2-build "$genome" "$IndexOutput"
+
+#Mapping
+parallel "qsub -F '{1} /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/bowtie2/allGenomesMappingIndex.fa /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/mapped' /home/projects/dtu_00009/data/Scripts/qsub_bowtie.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/sampleName 
+
+sampleName=$1
+IndexOutput=$2
+SamOutput=$4
+
+bowtie2 -p 6 -x "$IndexOutput" -1 /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/"$sampleName"_1.fastq.gz -2 /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/"$R2" > "$SamO$
+
+Call genes on genomes:
+input=$1
+output=$2
+
+prodigal -i "$input" -d "$output" -p meta
+
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/allGenomes.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/allGenomes.genes.fna' /home/projects/dtu_00009/data/Scripts/qsub_Lacto_prodigal.sh
+
+#kører meta flag da de binned genomes er contigs / lidt i tvivl om hvad da andre er, scaffolds? 
+ 
+Instrain:
+
+inStrain profile /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/mapped/*.sam /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/allGenomes.fasta -o /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/profile/*.IS -p 6 -g /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/allGenomesGenes/allGenomes.genes.fna -s /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/genomes.stb 
+
+samInput=$1
+inputPath=$2
+genomes=$3
+outputPath=$4
+genes=$5
+scafToBins=$6
+
+inStrain profile "$inputPath"/"$samInput".sam  "$genomes" -o "$outputPath"/"$samInput".IS -p 12 -g "$genes" -s "$scafToBins"
+
+
+parallel "qsub -F '{1} /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/mapped /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/allGenomes.fasta /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/instrain_profile /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/allGenomes.genes.fna /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/genomes.stb' /home/projects/dtu_00009/data/Scripts/qsub_instrain_profile.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/sampleName 
+
+
+
+instrain compare
+
+inStrain compare -i /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/instrain_profile/*.IS/ -s /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/genomes.stb -p 6 -o /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/instrain_compare/
+
+
+output=$1
+
+inStrain compare -i /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/instrain_profile/*.IS/ -s /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/genomes.stb -p 6 -o "$output"
+
+
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/instrain_compare/' /home/projects/dtu_00009/data/Scripts/qsub_instrain_compare.sh 
+
+
+
 
 
