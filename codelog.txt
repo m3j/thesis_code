@@ -434,7 +434,7 @@ sampleName=$1
 IndexOutput=$2
 SamOutput=$4
 
-bowtie2 -p 6 -x "$IndexOutput" -1 /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/"$sampleName"_1.fastq.gz -2 /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/"$R2" > "$SamO$
+bowtie2 -p 6 -x "$IndexOutput" -1 /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/"$sampleName"_1.fastq.gz -2 /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/"$sampleName"_2.fastq.gz > "$Samoutput"
 
 Call genes on genomes:
 input=$1
