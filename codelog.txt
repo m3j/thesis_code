@@ -477,6 +477,33 @@ inStrain compare -i /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStr
 qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/instrain_compare/' /home/projects/dtu_00009/data/Scripts/qsub_instrain_compare.sh 
 
 
+_______________________________________________________________________
+
+Multiple alignment to do phylogeny
+
+Mafft 
+
+mafft --maxiterate 1000 --globalpair --amino --thread 32 in > out 
+
+input=$1
+mafft --maxiterate 1000 --globalpair --amino --thread 32 "$input" > /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/MSA/mafft_global 
+
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/MSA/bins.fasta' /home/projects/dtu_00009/data/Scripts/Sripts_TM/qsub_mafft.sh
+
+# on all sequences both on database refs and bins
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/MSA/msa_ref_and_bins' /home/projects/dtu_00009/data/Scripts/Sripts_TM/qsub_mafft.sh
 
 
+
+FastTree
+
+input=$1
+
+FastTree "$input" >  /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/fastTree
+
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/MSA/mafft_global' /home/projects/dtu_00009/data/Scripts/Scripts_TM/qsub_fasttree.sh
+
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/MSA/bins.fasta' /home/projects/dtu_00009/data/Scripts/Scripts_TM/qsub_fasttree.sh
+
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/MSA/mafft_global_all' /home/projects/dtu_00009/data/Scripts/Scripts_TM/qsub_fasttree.sh
 
