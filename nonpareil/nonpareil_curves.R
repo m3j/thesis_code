@@ -11,9 +11,9 @@ samples <- read.table('nonpareil_table_standard.csv', sep=',', header=TRUE, as.i
 # samples <- read.table('nonpareil_table_60.csv', sep=',', header=TRUE, as.is=TRUE);
 
 attach(samples)
-nps <- Nonpareil.set(file, col=col, labels=name, plot.opts=list(plot.observed=FALSE), plot=F)
+nps <- Nonpareil.set(file, col = col, labels = name, plot.opts = list(plot.observed = FALSE), plot=F)
 
-pplot.Nonpareil.Set(x = nps, col = col, labels = name, legend.opts = F, 
+plot.Nonpareil.Set(x = nps, col = col, labels = name, legend.opts = F, 
                    plot.observed = FALSE) 
 # Nonpareil.legend(nps, x="bottomleft", cex=0.45)
 detach(samples)

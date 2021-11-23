@@ -1,0 +1,10 @@
+###data download: qsub_chicken_data_download.sh
+# data downloads from NCBI using SRA tools, converted to zipped fastq files.  
+
+cd /home/projects/dtu_00009/data/chicken_data_TM
+filename=$1
+prefetch --output-directory /home/projects/cu_00008/data/raw_data --option-file "$filename"
+fastq-dump --gzip --split-files "$filename".sra
+
+parallel "qsub -F '{1}' /home/projects/cu_00008/data/scripts/qsub_chicken_data_download.sh" :::: /home/projects/cu_00008/data/missed_downloads.txt
+
