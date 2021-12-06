@@ -8,3 +8,53 @@ fastq-dump --gzip --split-files "$filename".sra
 
 parallel "qsub -F '{1}' /home/projects/cu_00008/data/scripts/qsub_chicken_data_download.sh" :::: /home/projects/cu_00008/data/missed_downloads.txt
 
+
+________________________________________________________________________________________________________________
+Running my script for counting the reads which is primary key to match run_id with sample_id
+
+python count_read_to_match_id.py /home/projects/cu_00008/data/samples_1read_id.csv /home/projects/cu_00008/data/ /home/projects/cu_00008/data/
+
+This did not work as the count it calculated was not correct for unknown reasons - instead the number of lines in each file where found using this: 
+for x in CL100*/*_1.fq.gz; do unpigz -p 8 -c $x | wc -l && echo $x; done  
+and then it was divided by 4 to get the number of reads
+
+________________________________________________________________________________________________________________
+## creating a subset. qsub_subsetting.sh
+
+while read f; do
+  seqtk sample $f 10000 | gzip - -c > /home/projects/cu_00008/data/working_data/subset/$f
+done </home/projects/cu_00008/data/working_data/subset/subset_filenames
+
+________________________________________________________________________________________________________________
+
+fastqc
+for subset:
+parallel "qsub -F '{1}' /home/projects/cu_00008/data/scripts/qsub_fastQC.sh"  :::: /home/projects/cu_00008/data/working_data/subset/subset_filenames
+
+for full data: change output directory in qsub-file
+parallel "qsub -F '{1}' /home/projects/cu_00008/data/scripts/qsub_fastQC.sh"  :::: /home/projects/cu_00008/data/raw_data/rawreads.list
+
+multiqc was run with iqsub with conda environment env_python3.6 within the fastQC directory. 
+multiqc . 
+
+________________________________________________________________________________________________________________
+Adapter removal
+
+all the CL samples are only 50 bp long so i will not remove the first 5 bases which also looks ok for the most cases. 
+
+to make a list of CL samples for R1 and R2 
+ls | grep "CL100" | grep "_1.fq.gz" > CL_R1.list 
+ls | grep "CL100" | grep "_2.fq.gz" > CL_R2.list 
+
+parallel --xapply "qsub -F '{1} {2}' /home/projects/cu_00008/data/scripts/qsub_adapter_removal.sh " :::: /home/projects/cu_00008/data/raw_data/CL_R1.list :::: /home/projects/cu_00008/data/raw_data/CL_R2.list
+
+Adapter removal and left trim
+
+Borh adapter removal and left trim will be done on the rest of the reads. 
+ls | grep "RR" | grep "_1.fq.gz" > RR_R1.list
+ls | grep "RR" | grep "_2.fq.gz" > RR_R2.list
+
+parallel --xapply "qsub -F '{1} {2}' /home/projects/cu_00008/data/scripts/qsub_adapter_5trim.sh " :::: /home/projects/cu_00008/data/raw_data/RR_R1.list :::: /home/projects/cu_00008/data/raw_data/RR_R2.list
+
+
+
