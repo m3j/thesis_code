@@ -1,0 +1,64 @@
+DATASET_TEXT
+SEPARATOR	COMMA
+COLOR,#bebada
+DATASET_LABEL,Taxonomy labels
+MARGIN,5
+
+#Internal tree nodes can be specified using IDs directly, or using the 'last common ancestor' method described in iTOL help pages
+#=================================================================#
+#       Actual data follows after the "DATA" keyword              #
+#=================================================================#
+#the following fields are possible for each node:
+#ID,label,position,color,style,size factor,rotation
+
+#position defines the position of the text label on the tree:
+#  -1 = external label
+#  a number between 0 and 1 = internal label positioned at the specified value along the node branch (for example, position 0 is exactly at the start of node branch, position 0.5 is in the middle, and position 1 is at the end)
+#style can be 'normal',''bold','italic' or 'bold-italic'
+#size factor will be multiplied with the standard font size
+
+DATA
+#Examples
+
+#node 9598 will have an external label 'Pan troglodytes' in bold red and twice the size of standard labels
+#9598,Pan troglodytes,-1,#ff0000,bold,2,0
+
+#node 9606 will have an external label with multiple mixed styles
+#9606,<bi color='#006600'>Homo </bi><i>sapiens</i><sup size='0.5' color='#999999'>citation</sup>,-1,#000000,normal,1,0
+
+#node 4530 will have an internal label 'Oryza sativa' in bold italic blue, starting directly over the node
+#4530,Oryza sativa,0,#0000ff,bold-italic,1
+
+#ID,label,position,color,style,size factor,rotation
+RS_GCF_004359375.1,Acetilactobacillus,-1,#000000,normal,1,0
+RS_GCF_001436375.1,Agrilactobacillus,-1,#000000,normal,1,0
+RS_GCF_001936335.1,Amylolactobacillus ,-1,#000000,normal,1,0
+RS_GCF_001281265.1,Apilactobacillus,-1,#000000,normal,1,0
+RS_GCF_003522965.1,Bombilactobacillus,-1,#000000,normal,1,0
+RS_GCF_002849895.1,Companilactobacillus(5/9),-1,#cc0000,normal,1,0
+RS_GCF_003096575.1,Convivina,-1,#000000,normal,1,0
+RS_GCF_001434695.1,Dellaglioa,-1,#000000,normal,1,0
+RS_GCF_001436645.1,Fructilactobacillus,-1,#000000,normal,1,0
+RS_GCF_900112405.1,Fructobacillus,-1,#000000,normal,1,0
+RS_GCF_000428925.1,Furfurilactobacillus,-1,#000000,normal,1,0
+RS_GCF_001436605.1,Holzapfelia,-1,#000000,normal,1,0
+RS_GCF_001434705.1,Lacticaseibacillus,-1,#000000,normal,1,0
+RS_GCF_014131735.1,Lactiplantibacillus,-1,#000000,normal,1,0
+RS_GCF_001433875.1,Lactobacillus(9/187),-1,#cc0000,normal,1,0
+RS_GCF_001435835.1,Lapidilactobacillus,-1,#000000,normal,1,0
+RS_GCF_009683145.1,Latilactobacillus,-1,#000000,normal,1,0
+RS_GCF_001434735.1,Lentilactobacillus,-1,#000000,normal,1,0
+RS_GCF_000014445.1,Leuconostoc,-1,#000000,normal,1,0
+RS_GCF_003124125.1,Levilactobacillus(2/2),-1,#cc0000,normal,1,0
+RS_GCF_001435755.1,Ligilactobacillus(17/232),-1,#cc0000,normal,1,0
+RS_GCF_000159215.1,Limosilactobacillus(19/212),-1,#cc0000,normal,1,0
+RS_GCF_001436755.1,Liquorilactobacillus,-1,#000000,normal,1,0
+RS_GCF_003946275.1,Loigolactobacillus,-1,#000000,normal,1,0
+RS_GCF_000372485.1,Oenococcus,-1,#000000,normal,1,0
+RS_GCF_001437205.1,Paralactobacillus,-1,#000000,normal,1,0
+RS_GCF_001436295.1,Paucilactobacillus(1/1),-1,#cc0000,normal,1,0
+RS_GCF_001437255.1,Pediococcus,-1,#000000,normal,1,0
+RS_GCF_001435585.1,Schleiferilactobacillus,-1,#000000,normal,1,0
+RS_GCF_001435975.1,Secundilactobacillus,-1,#000000,normal,1,0
+RS_GCF_900094835.1,Weissella(4/24),-1,#cc0000,normal,1,0
+RS_GCF_003946645.1,RHOV01,-1,#000000,normal,1,0
