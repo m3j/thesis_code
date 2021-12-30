@@ -1,0 +1,89 @@
+DATASET_TEXT
+SEPARATOR,COMMA
+COLOR,#bebada
+DATASET_LABEL,Taxonomy labels
+MARGIN,5
+
+#Internal tree nodes can be specified using IDs directly, or using the 'last common ancestor' method described in iTOL help pages
+#=================================================================#
+#       Actual data follows after the "DATA" keyword              #
+#=================================================================#
+#the following fields are possible for each node:
+#ID,label,position,color,style,size factor,rotation
+
+#position defines the position of the text label on the tree:
+#  -1 = external label
+#  a number between 0 and 1 = internal label positioned at the specified value along the node branch (for example, position 0 is exactly at the start of node branch, position 0.5 is in the middle, and position 1 is at the end)
+#style can be 'normal',''bold','italic' or 'bold-italic'
+#size factor will be multiplied with the standard font size
+
+DATA
+#Examples
+
+#node 9598 will have an external label 'Pan troglodytes' in bold red and twice the size of standard labels
+#9598,Pan troglodytes,-1,#ff0000,bold,2,0
+
+#node 9606 will have an external label with multiple mixed styles
+#9606,<bi color='#006600'>Homo </bi><i>sapiens</i><sup size='0.5' color='#999999'>citation</sup>,-1,#000000,normal,1,0
+
+#node 4530 will have an internal label 'Oryza sativa' in bold italic blue, starting directly over the node
+#4530,Oryza sativa,0,#0000ff,bold-italic,1
+
+#ID,label,position,color,style,size factor,rotation
+S8C2455,Companilactobacillus farciminis,-1,#ffff88,normal,1,0
+GCF_002706745,Companilactobacillus farciminis,-1,#ffff88,normal,1,0
+GCF_005405305,Companilactobacillus formosensis,-1,#ffff88,normal,1,0
+GCF_009764355,Companilactobacillus paralimentarius A,-1,#ffff88,normal,1,0
+GCF_004745525,Companilactobacillus suantsaicola,-1,#ffff88,normal,1,0
+S52C595,Lactobacillus,-1,#ffff88,normal,1,0
+GCF_002706375,Lactobacillus amylovorus,-1,#ffff88,normal,1,0
+S2C205,Lactobacillus crispatus,-1,#ee2b2a,normal,1,0
+GCF_002088015,Lactobacillus crispatus,-1,#ee2b2a,normal,1,0
+GCF_000614735,Lactobacillus gallinarum,-1,#f57715,normal,1,0
+S24C362,Lactobacillus gallinarum,-1,#f57715,normal,1,0
+S4C569,Lactobacillus johnsonii,-1,#f57715,normal,1,0
+GCF_000159355,Lactobacillus johnsonii,-1,#f57715,normal,1,0
+GCF_000615285,Lactobacillus kitasatonis,-1,#fec809,normal,1,0
+GCF_001433855,Levilactobacillus brevis,-1,#ffff88,normal,1,0
+GCF_001434785,Levilactobacillus namurensis,-1,#ffff88,normal,1,0
+S28C2674,Ligilactobacillus,-1,#fec809,normal,1,0
+S33C4056,Ligilactobacillus,-1,#ffff88,normal,1,0
+S10C455,Ligilactobacillus,-1,#ffff88,normal,1,0
+S9C3913,Ligilactobacillus,-1,#ffff88,normal,1,0
+S10C3913,Ligilactobacillus,-1,#ffff88,normal,1,0
+S16C670,Ligilactobacillus agilis,-1,#fec809,normal,1,0
+S2C1297,Ligilactobacillus agilis,-1,#fec809,normal,1,0
+S10C1297,Ligilactobacillus agilis,-1,#ffff88,normal,1,0
+GCF_001436215,Ligilactobacillus agilis,-1,#ffff88,normal,1,0
+S13C2782,Ligilactobacillus aviarius,-1,#ee2b2a,normal,1,0
+S20C3157,Ligilactobacillus aviarius,-1,#ee2b2a,normal,1,0
+GCF_001436315,Ligilactobacillus aviarius,-1,#f57715,normal,1,0
+GCF_001654615,Ligilactobacillus aviarius B,-1,#fec809,normal,1,0
+GCF_000423265,Ligilactobacillus saerimneri,-1,#fec809,normal,1,0
+S18C2441,Ligilactobacillus salivarius,-1,#f57715,normal,1,0
+S2C3320,Ligilactobacillus salivarius,-1,#f57715,normal,1,0
+GCF_001435955,Ligilactobacillus salivarius,-1,#f57715,normal,1,0
+S14C589,Limosilactobacillus,-1,#fec809,normal,1,0
+S14C330,Limosilactobacillus,-1,#fec809,normal,1,0
+S12C1500,Limosilactobacillus coleohominis,-1,#ffff88,normal,1,0
+S14C1039,Limosilactobacillus ingluviei,-1,#fec809,normal,1,0
+S15C1039,Limosilactobacillus ingluviei,-1,#fec809,normal,1,0
+S10C1039,Limosilactobacillus ingluviei,-1,#fec809,normal,1,0
+GCF_001435775,Limosilactobacillus ingluviei,-1,#fec809,normal,1,0
+S42C891,Limosilactobacillus ingluviei,-1,#fec809,normal,1,0
+S5C1113,Limosilactobacillus oris,-1,#f57715,normal,1,0
+S36C1134,Limosilactobacillus oris,-1,#fec809,normal,1,0
+GCF_001435345,Limosilactobacillus pontis,-1,#ffff88,normal,1,0
+GCF_002940945,Limosilactobacillus pontis A,-1,#ffff88,normal,1,0
+GCF_000016825,Limosilactobacillus reuteri,-1,#ffff88,normal,1,0
+S16C442,Limosilactobacillus reuteri E,-1,#f57715,normal,1,0
+GCF_013694365,Limosilactobacillus reuteri E,-1,#f57715,normal,1,0
+GCF_012843675,Limosilactobacillus sp012843675,-1,#ffff88,normal,1,0
+GCA_900557215,Limosilactobacillus sp900557215,-1,#fec809,normal,1,0
+GCF_900240275,Limosilactobacillus timonensis,-1,#ffff88,normal,1,0
+GCF_000159435,Limosilactobacillus vaginalis,-1,#ee2b2a,normal,1,0
+GCF_001436295,Paucilactobacillus vaccinostercus,-1,#ffff88,normal,1,0
+GCF_000193635,Weissella cibaria,-1,#fec809,normal,1,0
+S49C1120,Weissella confusa,-1,#ffff88,normal,1,0
+GCF_000160575,Weissella paramesenteroides,-1,#ffff88,normal,1,0
+GCF_005405465,Weissella thailandensis,-1,#fec809,normal,1,0

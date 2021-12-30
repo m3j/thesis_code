@@ -422,7 +422,7 @@ Endend up making a python script
 
 python Append_Header_Fasta.py /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/ref_bins/ /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/inStrain/ref_bins/ref_bins_header.csv 
 
-unzip genomes from DB to be able to run dRep - maybe there is no need to unzip?:
+unzip genomes from DB to be able to run dRep:
 parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_unzip_nonpareil.sh" :::: /home/projects/dtu_00009/data/reference_genomes/Lactobacillaceae_refs/genomes.txt
 
 Drep on database genomes and drep_bins. 
@@ -531,7 +531,7 @@ qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/MSA/mafft_global
 qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/MSA/bins.fasta' /home/projects/dtu_00009/data/Scripts/Scripts_TM/qsub_fasttree.sh
 
 qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/MSA/mafft_global_all' /home/projects/dtu_00009/data/Scripts/Scripts_TM/qsub_fasttree.sh
-
+ 
 _______________________________________________________________________
 
 Kaiju
@@ -551,8 +551,91 @@ qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/No_contamination
 parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/Scripts_TM/qsub_kaiju.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/sampleName
 
 
+compining samples with taxon names using Gisles script
+
+kaiju2phyloseq.py -i all_samples/ -n /share/databases/Kaiju/kaiju_db_nr_euk_names.dmp -m /share/databases/Kaiju/nodes.dmp -o pacu_kaiju 
+
+kaiju2phyloseq.py -i /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/kaiju/ -n /home/projects/dtu_00009/data/Kaijudb/names.dmp -m /home/projects/dtu_00009/data/Kaijudb/nodes.dmp -o chick_kaiju 
+
+
+
 _______________________________________________________________________
 
+Prokka for genome annotation - gene - correct file output for roary
 
+move the observed reference genomes from the instrain combined_db_bins_ref folder to prokka/ref_genomes.
+
+for FILE in $(cat /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/prokka/genome_files)
+do
+    cp ${FILE} /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/prokka/ref_genomes/
+done
+
+
+
+prokka --kingdom Bacteria --outdir prokka_GCA_000008285 --genus Listeria --locustag GCA_000008285 GCA_000008285.1_ASM828v1_genomic.fna
+
+
+genome=$1
+genome_file=$2
+
+prokka --kingdom Bacteria --outdir /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/prokka/output/"$genome"  --locustag '$genome' "$genome_file"
+
+parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/Scripts_TM/qsub_prokka.sh " :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/prokka/genome_names :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/prokka/genome_files
+
+
+#the bins has to long header names >37 so can try flag --centre X --compliant
+
+#parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/Scripts_TM/qsub_prokka.sh " :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/prokka/genome_names :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/prokka/genome_files
+
+Der er noget der ikke virker med locustag.. prøver at skifte header names så --centre X --compliant ikke behøves
+
+For S samples 
+
+for i in S* ; do sed -E 's/>(.+)_S(.+)/>S\2/' $i > $i.o; done
+for i in *.k ; do awk '/>/{sub(/\,/,"_"++i)}1' $i > $i.k ; done 
+
+for GC samples ( første mellemrum )
+
+for i in GC* ; do seqkit replace -p "\s.+" $i > $i.o.k; done
+
+for FILE in $(cat /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/prokka/genome_files)
+do
+    mv ${FILE}.o.k ../ref_genomes/${FILE}
+done
+
+
+_______________________________________________________________________
+
+roary 
+
+Renaming output to contain genome name 
+for FILE in $(cat /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/prokka/genome_names)
+do
+    mv ${FILE}/PROKKA_12142021.gff ${FILE}/PROKKA_${FILE}.gff
+done
+
+move the .gff in one folder 
+for FILE in $(cat /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/prokka/genome_names)
+do
+    cp ${FILE}/PROKKA_${FILE}.gff /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/roary/input_gff/
+done
+
+
+output=$1
+
+roary -f "$output" -e -n -v -p 16 home/projects/dtu_00009/data/chicken_data_TM/2_omgang/roary/input_gff/*.gff
+ 
+qsub -F ' /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/roary/output_salivarius /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/roary/input_gff/L_salivarius' qsub_roary.sh 
+
+Make a tree for the core gene alingments 
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/roary/output_salivarius/core_gene_alignment.aln /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/roary/output_salivarius/core_gene_tree.newick' /home/projects/dtu_00009/data/Scripts/Scripts_TM/qsub_fasttree.sh
+
+this is used to create plots with roary_plots.py. in qsub_roary_plots.sh
+qsub -F ' /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/roary/output_salivarius/' qsub_roary_plot.sh 
+
+_______________________________________________________________________
+
+Making tree for genus representatives 
+qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/MSA/genus_refs.fasta' /home/projects/dtu_00009/data/Scripts/Scripts_TM/qsub_fasttree.sh
 
 
