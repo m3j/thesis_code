@@ -639,3 +639,9 @@ Making tree for genus representatives
 qsub -F '/home/projects/dtu_00009/data/chicken_data_TM/2_omgang/MSA/genus_refs.fasta' /home/projects/dtu_00009/data/Scripts/Scripts_TM/qsub_fasttree.sh
 
 
+Remaking trees with outgroup: Enterococcus Faecalis RS_GCF_000392875.1
+grep -A 1 RS_GCF_000392875.1 gtdbtk.bac120.msa.fasta >> ../MSA/outgoup.fasta
+
+ref_and_bins_outgroup.fasta
+genus_ref_outgroup.fasta
+
