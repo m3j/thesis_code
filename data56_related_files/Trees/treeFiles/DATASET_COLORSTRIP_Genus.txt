@@ -62,3 +62,4 @@ RS_GCF_001435585.1,Schleiferilactobacillus,-1,#000000,normal,1,0
 RS_GCF_001435975.1,Secundilactobacillus,-1,#000000,normal,1,0
 RS_GCF_900094835.1,Weissella(4/24),-1,#cc0000,normal,1,0
 RS_GCF_003946645.1,RHOV01,-1,#000000,normal,1,0
+RS_GCF_000392875.1,Enterococcus,-1,#000000,normal,1,0
