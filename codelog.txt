@@ -6,10 +6,12 @@ ___________________________________________________________________________
 ###data download: qsub_chicken_data_download.sh
 # data downloads from NCBI using SRA tools, converted to zipped fastq files.  
 
-cd /home/projects/dtu_00009/data/chicken_data_TM;
-prefetch --output-directory /home/projects/dtu_00009/data/chicken_data_TM --option-file run_ids;
-fastq-dump --gzip --split-files *.sra;
+#command within qsub file:
+cd /home/projects/dtu_00009/data/chicken_data_TM
+prefetch --output-directory /home/projects/dtu_00009/data/chicken_data_TM --option-file run_ids
+fastq-dump --gzip --split-files *.sra
 
+#command to run qsub
 parallel "qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_chicken_data_download.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/raw_data/sra.list
 
 ___________________________________________________________________________
@@ -372,7 +374,7 @@ ____________
 
 dRep dereplicate "$outputDir" -g /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/vamb_output/bins/* -d -com 50 -con 10
 
-#using filtering levels equal to middel quality of contamination 10% and completness of 50% ? - ask Gisle
+#using filtering levels equal to middel quality of contamination 10% and completness of 50% 
 
 
 #test_set 
