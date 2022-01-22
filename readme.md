@@ -9,7 +9,7 @@ The main part of the project was run on a computer cluster and all the commandli
 ### Overview
 The output from different programs run on the computer cluster are found in some of the folders (FastQC_reports,  Roary_output, assembly_stat_plots, drep_output_figures, inStrain_output, Kaiju_analysis, nonpareil), but a few are in the data56_related_files folder (CheckM_results_file, Preprocessing_output, gtdbtk.bac120.summary.tsv). 
 
-The output have been used in different analysis of which the most are found within the Jupyter_Notebooks. Folders nonpareil, kaiju_analysis and assembly_stat_plots contain the R code for the respective analysis and visulaisatioins. 
+The output have been used in different analysis of which the most are found within the Jupyter_Notebooks. Folders nonpareil, kaiju_analysis and assembly_stat_plots contain the R code for the respective analysis and visuailsations. 
 
 The resultFigs contains the output figures from the notebooks while the result from the R code are within their respective folders. 
 
