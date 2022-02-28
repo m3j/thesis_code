@@ -15,4 +15,5 @@ The resultFigs contains the output figures from the notebooks while the result f
 
 
 ### Acknowledgements  
-A great thanks to my supervisors Gisle Alberg Vestergaard and Lea Benedict Skov Hansen. 
+
+A great thanks to my supervisors Gisle Alberg Vestergaard and Lea Benedict Skov Hansen for guidance and support. 

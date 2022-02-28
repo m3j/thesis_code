@@ -1,0 +1,11 @@
+ERR2241653_2.fastq.gz
+ERR2241849_2.fastq.gz
+ERR2241890_2.fastq.gz
+ERR2241923_2.fastq.gz
+SRR6323088_2.fastq.gz
+SRR6323134_2.fastq.gz
+SRR6323249_2.fastq.gz
+SRR6323296_2.fastq.gz
+SRR6323516_2.fastq.gz
+SRR6323556_2.fastq.gz
+SRR9113737_2.fastq.gz
