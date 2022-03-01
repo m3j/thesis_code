@@ -1,0 +1,22 @@
+name: kaiju
+channels:
+  - bioconda/label/cf201901
+  - bioconda
+  - conda-forge
+  - defaults
+  - r
+dependencies:
+  - _libgcc_mutex=0.1=main
+  - _openmp_mutex=4.5=1_gnu
+  - ca-certificates=2021.7.5=h06a4308_1
+  - gnu-wget=1.18=3
+  - kaiju=1.6.3=hd28b015_0
+  - libgcc=7.2.0=h69d50b8_2
+  - libgcc-ng=9.3.0=h5101ec6_17
+  - libgomp=9.3.0=h5101ec6_17
+  - libstdcxx-ng=9.3.0=hd4cf53a_17
+  - openssl=1.1.1l=h7f8727e_0
+  - pcre=8.45=h295c915_0
+  - perl=5.26.2=h14c3975_0
+  - zlib=1.2.11=h7b6447c_3
+prefix: /home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/envs/kaiju

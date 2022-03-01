@@ -80,7 +80,7 @@ The adapter reference file used is provided by BBMap at their GitHub called adap
 ___________________________________________________________________________
 
 ## removing low quality with sickle :
-# qsub_sickle.sh 
+
 
 ls Trimmed | grep '_1.fastq.gz$' > trimmed_r1.list
 ls Trimmed | grep '_2.fastq.gz$' > trimmed_r2.list
@@ -88,10 +88,15 @@ ls Trimmed | grep '_2.fastq.gz$' > trimmed_r2.list
 #2omgang m parallels udenfor
 parallel --xapply "qsub -F '{1} {2}' /home/projects/dtu_00009/data/Scripts/qsub_sickle.sh " :::: /home/projects/dtu_00009/data/chicken_data_TM/trimmed_r1.list :::: /home/projects/dtu_00009/data/chicken_data_TM/trimmed_r2.list
 
+# qsub_sickle.sh 
+conda activate env_sickle
+
 R1=$1
 R2=$2
 
 sickle pe -t sanger -g -f Trimmed/"$R1" -r Trimmed/"$R2" -l 50 -o Hquality/"$R1" -p Hquality/"$R2" -s Hquality/"$R1"_singles.fastq.gz
+
+conda deactivate
 
 #examples of trimmed_r1.list and trimmed_r2.list are seen in exampleFiles/example2.txt and  exampleFiles/example3.txt respectively.
 
@@ -180,6 +185,8 @@ ls /home/projects/dtu_00009/data/chicken_data_TM/2_omgangNo_contamination | grep
 # running the nonpareil
 parallel " qsub -F '{1}' /home/projects/dtu_00009/data/Scripts/qsub_nonpareil.sh" :::: /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/preprocessed_r1_unzipped.list
 
+conda activate env_nonpareil
+
 filename=$1
 nonpareil -s /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/No_contamination/"$filename" -T kmer -b
 /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/nonpareil60/"$filename" -f fastq -t 32 -L 60
@@ -252,6 +259,7 @@ concatenate.py output_file input_file1 input_file2 ...
 #generating BAM files 
 # first indexing og catalog - using the catalogue.fna.gz file just created. 
 
+conda activate env_vamb
 minimap2 -I 32g -d catalogue.mmi /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb_test/catalogue.fna.gz
 
 #align reads back to reference based on SPAdes denovo assembley:
@@ -263,9 +271,10 @@ cut -f 1 samples2data.txt > sampleName
 # command in the Script file qsub_minimap_vamb.sh:
 _________
 cd /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb
-sample=$1
 
 conda activate env_vamb
+
+sample=$1
 
 minimap2 -t -I 32g 8 -N 50 -ax sr catalogue.mmi  /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/No_contamination/"$sample"_1.fastq.gz /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/No_contamination/"$sample"_2.fastq.gz | samtools view -F 3584 -b --threads 8 > /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/vamb/bam/"$sample".bam
 
@@ -718,7 +727,6 @@ qsub -F ' /home/projects/dtu_00009/data/chicken_data_TM/2_omgang/roary/output_sa
 
 
 Make a tree for the core gene alingments 
-conda activate env_fasttree
 
 conda activate env_fasttree
 
