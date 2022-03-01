@@ -5,6 +5,7 @@
 This repositiory was created in relation to my thesis project working with metagenomic data. 
 
 The main part of the project was run on a computer cluster and all the commandlines run there can be found in the codelog.txt file. 
+All the environments and programs used can be found in the .yml files in the YML_files folder. The environment used will be stated in the codelog.txt and if no environment is mentioned the env_base.yml environment is used.   
 
 ### Overview
 The output from different programs run on the computer cluster are found in some of the folders (FastQC_reports,  Roary_output, assembly_stat_plots, drep_output_figures, inStrain_output, Kaiju_analysis, nonpareil), but a few are in the data56_related_files folder (CheckM_results_file, Preprocessing_output, gtdbtk.bac120.summary.tsv). 
