@@ -1,0 +1,13 @@
+name: env_prodigal
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+  - r
+dependencies:
+  - _libgcc_mutex=0.1=main
+  - _openmp_mutex=4.5=1_gnu
+  - libgcc-ng=9.3.0=h5101ec6_17
+  - libgomp=9.3.0=h5101ec6_17
+  - prodigal=2.6.3=h779adbc_3
+prefix: /home/projects/dtu_00009/people/majjag/Bin/Programs/miniconda3/envs/env_prodigal
